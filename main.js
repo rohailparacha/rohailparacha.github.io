@@ -5,6 +5,37 @@ $(document).ready(function(){
 });
 
 
+function xml2json (srcDOM) {
+    let children = [...srcDOM.children];
+
+    // base case for recursion. 
+    if (!children.length) {
+      return srcDOM.innerHTML
+    }
+
+    // initializing object to be returned. 
+    let jsonResult = {};
+
+    for (let child of children) {
+
+      // checking is child has siblings of same name. 
+      let childIsArray = children.filter(eachChild => eachChild.nodeName === child.nodeName).length > 1;
+
+      // if child is array, save the values as array, else as strings. 
+      if (childIsArray) {
+        if (jsonResult[child.nodeName] === undefined) {
+          jsonResult[child.nodeName] = [xml2json(child)];
+        } else {
+          jsonResult[child.nodeName].push(xml2json(child));
+        }
+      } else {
+        jsonResult[child.nodeName] = xml2json(child);
+      }
+    }
+
+    return jsonResult;
+  }
+
 async function submitData(){
 
     var meterNumber = document.getElementById('meterNumberTbx').value;
@@ -146,7 +177,7 @@ async function getToken(env){
 
 }
 
-async function fetchDataFromElhub(data){
+async function fetchDataFromElhub(meterNumber){
 
     return new Promise(async (resolve, reject) => {
 
@@ -205,7 +236,7 @@ async function fetchDataFromElhub(data){
          var tokenRes = {
              access_token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSIsImtpZCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSJ9.eyJhdWQiOiJodHRwOi8vYXBpLXN0YWcudXRpbGl0eWNsb3VkLmFwcCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzczZmJjZjU2LWFkMGUtNDQxYy1iNDMxLTJhMzZkYzg5MThkNy8iLCJpYXQiOjE1ODkzNzEzNDIsIm5iZiI6MTU4OTM3MTM0MiwiZXhwIjoxNTg5Mzc1MjQyLCJhaW8iOiI0MmRnWUZoYzF2M2dnY0x2VjR0OG14dW0yL3pzQndBPSIsImFwcGlkIjoiODAxMTEyMDAtNTJhNS00YjhkLTljYjEtYTk3ZDJmMDI1YTdlIiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzNmYmNmNTYtYWQwZS00NDFjLWI0MzEtMmEzNmRjODkxOGQ3LyIsIm9pZCI6IjEyNjZkODUxLWQwNDctNDY0Ni04Y2NmLTA0M2ViY2E4MGM2ZCIsInN1YiI6IjEyNjZkODUxLWQwNDctNDY0Ni04Y2NmLTA0M2ViY2E4MGM2ZCIsInRpZCI6IjczZmJjZjU2LWFkMGUtNDQxYy1iNDMxLTJhMzZkYzg5MThkNyIsInV0aSI6InhmRVJFN1JVYTBtbVRYSHp0RW9YQUEiLCJ2ZXIiOiIxLjAifQ.HyvSjprdxb90o-cvl29OnGg4eDJ89cTQ2l7Csz_QHeByCARR_ueXim2K_jZkAZZ0tk88OneTs0ATsMDZuuN8MlnIvlqhDxZkFvJeVZbptBNeMvq5PLOR8woTGUBid1_8P0SM0Y9r8A5-puesZXmLs4ckWRvTLESh5XllTMZ2ouaNkMIwaJ_9SQ3m-IMOqj4cBlYTHbcTS5eCSlesprDmPiI1oXJCNznImEHtMFkR6GbONfJgV0InF2wBjzkMi4kjTroqk4zeq260eYmZOCmsJTsc_Nzru3-bhgCKIAbEutkC3ajtQ0XUbzXsTw55kh9ZHlGTWIQ9aFSbDt9FFmRGew'
          }
-        var elhubResponse = await makeFetchRequest(selectedEnv,tokenRes.access_token,data.meterNumber)
+        var elhubResponse = await makeFetchRequest(selectedEnv,tokenRes.access_token,document.getElementById('meterNumberTbx').value)
 
         if(elhubResponse.status==200){
             let xmlstr = elhubResponse.response;
