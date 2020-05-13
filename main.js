@@ -104,23 +104,43 @@ async function getToken(env){
       var reqbody = "grant_type=client_credentials&client_id="+CLIENT_ID+"&client_secret="+CLIENT_SECRET+"&audience=124&scope="+SCOPE_URL
      
 
-        var settings = {
-            "url": LOGIN_ENDPOINT,
-            "method": "POST",
-            "headers": {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            "data":reqbody,
-            success:function(response){
-                console.log(response);
-                resolve(response)
-            },
-            error:function(exception){
-                console.log(exception);
+        // var settings = {
+        //     "url": LOGIN_ENDPOINT,
+        //     "method": "POST",
+        //     "headers": {
+        //       "Content-Type": "application/x-www-form-urlencoded"
+        //     },
+        //     "data":reqbody,
+        //     success:function(response){
+        //         console.log(response);
+        //         resolve(response)
+        //     },
+        //     error:function(exception){
+        //         console.log(exception);
+        //     }
+        // };
+          
+        // $.ajax(settings);
+
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("POST", LOGIN_ENDPOINT, true);
+        
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+        xmlhttp.onreadystatechange = function (e) {
+            if (xmlhttp.readyState === 4) {
+                if (xmlhttp.status === 200) {
+                    if (success)
+                        resolve(xmlhttp.responseText, url);
+                }
+                else {
+                    if (error)
+                        reject(xmlhttp.statusText);
+                }
             }
         };
-          
-        $.ajax(settings);
+        xmlhttp.send(reqbody);
         
     });
 
@@ -177,11 +197,14 @@ async function fetchDataFromElhub(data){
     //   selectedEnv = env["pythagoras"]
     // }
         
-   var selectedEnv = env["hks"];
+   var selectedEnv = env["ahl"];
 
         try {
         
-          var tokenRes = await getToken(selectedEnv);
+         // var tokenRes = await getToken(selectedEnv);
+         var tokenRes = {
+             access_token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSIsImtpZCI6IkN0VHVoTUptRDVNN0RMZHpEMnYyeDNRS1NSWSJ9.eyJhdWQiOiJodHRwOi8vYXBpLXN0YWcudXRpbGl0eWNsb3VkLmFwcCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzczZmJjZjU2LWFkMGUtNDQxYy1iNDMxLTJhMzZkYzg5MThkNy8iLCJpYXQiOjE1ODkzNzEzNDIsIm5iZiI6MTU4OTM3MTM0MiwiZXhwIjoxNTg5Mzc1MjQyLCJhaW8iOiI0MmRnWUZoYzF2M2dnY0x2VjR0OG14dW0yL3pzQndBPSIsImFwcGlkIjoiODAxMTEyMDAtNTJhNS00YjhkLTljYjEtYTk3ZDJmMDI1YTdlIiwiYXBwaWRhY3IiOiIxIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNzNmYmNmNTYtYWQwZS00NDFjLWI0MzEtMmEzNmRjODkxOGQ3LyIsIm9pZCI6IjEyNjZkODUxLWQwNDctNDY0Ni04Y2NmLTA0M2ViY2E4MGM2ZCIsInN1YiI6IjEyNjZkODUxLWQwNDctNDY0Ni04Y2NmLTA0M2ViY2E4MGM2ZCIsInRpZCI6IjczZmJjZjU2LWFkMGUtNDQxYy1iNDMxLTJhMzZkYzg5MThkNyIsInV0aSI6InhmRVJFN1JVYTBtbVRYSHp0RW9YQUEiLCJ2ZXIiOiIxLjAifQ.HyvSjprdxb90o-cvl29OnGg4eDJ89cTQ2l7Csz_QHeByCARR_ueXim2K_jZkAZZ0tk88OneTs0ATsMDZuuN8MlnIvlqhDxZkFvJeVZbptBNeMvq5PLOR8woTGUBid1_8P0SM0Y9r8A5-puesZXmLs4ckWRvTLESh5XllTMZ2ouaNkMIwaJ_9SQ3m-IMOqj4cBlYTHbcTS5eCSlesprDmPiI1oXJCNznImEHtMFkR6GbONfJgV0InF2wBjzkMi4kjTroqk4zeq260eYmZOCmsJTsc_Nzru3-bhgCKIAbEutkC3ajtQ0XUbzXsTw55kh9ZHlGTWIQ9aFSbDt9FFmRGew'
+         }
         var elhubResponse = await makeFetchRequest(selectedEnv,tokenRes.access_token,data.meterNumber)
 
         if(elhubResponse.status==200){
@@ -224,5 +247,13 @@ async function fetchDataFromElhub(data){
     });
 
 }
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 
 
