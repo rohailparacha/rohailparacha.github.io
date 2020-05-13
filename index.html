@@ -1,74 +1,283 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-<title>Facebook Login JavaScript Example</title>
-<meta charset="UTF-8">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/fa/css/fontawesome-all.css">
+    <script src="vendor/jquery-3.2.1.min.js"></script>
+    
+    <script src="vendor/popper.min.js"></script>
+    <script src="vendor/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=MaterialIcons"
+      rel="stylesheet">
 </head>
+
 <body>
-<script>
+    <style>
+        body {
+            width: 420px;
 
-  function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-    console.log('statusChangeCallback');
-    console.log(response);                   // The current login status of the person.
-    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-      testAPI();  
-    } else {                                 // Not logged into your webpage or we are unable to tell.
-      document.getElementById('status').innerHTML = 'Please log ' +
-        'into this webpage.';
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        #reset {
+            margin-top: 36px;
+        }
+
+        .tab-pane {
+            padding: 10px 5px;
+        }
+
+        .grp {
+            float: left;
+            margin: 0 10px 10px;
+        }
+
+        label {
+            color: #888;
+        }
+
+        .loader {
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
     }
-  }
 
+    .loader:before {
+      content: ;
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+    
+      background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8)); */
+    }
 
-  function checkLoginState() {               // Called when a person is finished with the Login Button.
-    FB.getLoginStatus(function(response) {   // See the onlogin handler
-      statusChangeCallback(response);
-    });
-  }
+    /* :not(:required) hides these rules from IE9 and below */
+    .loader:not(:required) {
+      /* hide "loading..." text */
+      font: 0/0 a;
+      color: transparent;
+      text-shadow: none;
+      background-color: transparent;
+      border: 0;
+    }
 
+    .loader:not(:required):after {
+      content: ;
+      display: block;
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      margin-top: -0.5em;
+      -webkit-animation: spinner 1500ms infinite linear;
+      -moz-animation: spinner 1500ms infinite linear;
+      -ms-animation: spinner 1500ms infinite linear;
+      -o-animation: spinner 1500ms infinite linear;
+      animation: spinner 1500ms infinite linear;
+      border-radius: 0.5em;
+      -webkit-box-shadow: rgb(0, 179, 179) 1.5em 0 0 0, rgb(0, 179, 179) 1.1em 1.1em 0 0, rgb(0, 179, 179) 0 1.5em 0 0, rgb(0, 179, 179) -1.1em 1.1em 0 0, rgb(0, 179, 179) -1.5em 0 0 0, rgb(0, 179, 179) -1.1em -1.1em 0 0, rgb(0, 179, 179) 0 -1.5em 0 0, rgb(0, 179, 179) 1.1em -1.1em 0 0;
+      box-shadow: rgb(0, 179, 179) 1.5em 0 0 0, rgb(0, 179, 179) 1.1em 1.1em 0 0, rgb(0, 179, 179) 0 1.5em 0 0, rgb(0, 179, 179) -1.1em 1.1em 0 0, rgb(0, 179, 179) -1.5em 0 0 0, rgb(0, 179, 179) -1.1em -1.1em 0 0, rgb(0, 179, 179) 0 -1.5em 0 0, rgb(0, 179, 179) 1.1em -1.1em 0 0;
+    }
 
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '2814023752155526',
-      cookie     : true,                     // Enable cookies to allow the server to access the session.
-      xfbml      : true,                     // Parse social plugins on this webpage.
-      version    : 'v6.0'           // Use this Graph API version for this call.
-    });
+    /* Animation */
 
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
 
-    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-      statusChangeCallback(response);        // Returns the login status.
-    });
-  };
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
 
+    @-moz-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @-o-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Safari */
+
+    @-webkit-keyframes spin {
+      0% {
+        -webkit-transform: rotate(0deg);
+      }
+
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+     .buttons button {
+            margin-bottom: 10px;
+            width: 315px;
+        }
+
+        form .short {
+            width: 320px;
+            margin-right: 15px;
+        }
+
+        .buttons {
+            float: left;
+            margin: 0 10px 10px 0;
+        }
+
+        button {
+            min-width: 100px;
+        }
+
+        #user-form {
+            width: 300px;
+        }
+
+        .form-buttons {
+            margin-top: 5px;
+        }
+
+        .invited {
+            color: #ccc;
+        }
+
+        .action-column {
+            width: 30px;
+        }
+
+        .list-buttons {
+            margin-right: 15px;
+        }
+
+        .list-filter {
+            margin-right: 15px;
+        }
+
+        th.selector {
+            width: 10px;
+            vertical-align: middle;
+        }
+
+        .table td, .table th{
+            border: none;
+            padding: 0.50rem;
+        }
+        td.selector {
+            vertical-align: middle;
+            margin-right: 20px;
+        }
+    </style>
+<div class="container">
+
+  <div id="sideBarDiv" class="sidenav">
   
-  (function(d, s, id) {                      // Load the SDK asynchronously
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+  <div class="row">
+  <div class="col-md-9" style="margin-left:50px"> 
+  
+    <input class="form-control" type="text" id="meterNumberTbx" placeholder="Enter Metering Point e.g. 707057500088531602" />
+  </div>
+  
+  <div> 
+    <a href="javascript:void(0)" class="closebtn" >×</a>
+  </div>
+  
+  </div><br>
+  
+  <div class="row">
+  <div class="col-md-9" style="margin-left:170px">
+    <input  id="testElhub" class="btn btn-primary" type="button" value="Test Elhub" />
+  </div>
+  </div><br>
+  
+  <div class="row" style="margin-left:50px"><div id="requestMsgDiv"></div> </div>
+  
+  
+  
+  <div id="resultContent"></div>
+  
+  <div class="row" style="margin-left:50px"><span id="extElhubMsg"></span> </div>
+  
+  </div></div>;
 
- 
-  function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
-    });
-  }
-
-</script>
-
-
-//  The JS SDK Login Button 
-
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
-
-<div id="status">
-</div>
-
+    <script type="text/javascript" src="main.js"></script>
 </body>
+
 </html>
