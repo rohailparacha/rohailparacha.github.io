@@ -12,7 +12,6 @@ let signInType;
 
 // Create the main myMSALObj instance
 // configuration parameters are located at authConfig.js
-
 const myMSALObj = new msal.PublicClientApplication(msalConfig); 
 
 // Register Callbacks for Redirect flow
@@ -38,6 +37,23 @@ function authRedirectCallBack(error, response) {
 if (myMSALObj.getAccount()) {
     // avoid duplicate code execution on page load in case of iframe and Popup window.
     showWelcomeMessage(myMSALObj.getAccount());
+} else {
+    myMSALObj.ssoSilent(silentRequest).then((tokenResponse) => {
+        if (myMSALObj.getAccount()) {
+            console.log('id_token acquired at: ' + new Date().toString());
+            showWelcomeMessage(myMSALObj.getAccount());
+            getTokenRedirect(loginRequest);
+        } else if (tokenResponse.tokenType === "Bearer") {
+            console.log('access_token acquired at: ' + new Date().toString());
+        } else {
+            console.log("token type is:" + response.tokenType);
+        }
+    }).catch(error => {
+        console.error("Silent Error: " + error);
+        if (error instanceof msal.InteractionRequiredAuthError) {
+            signIn("loginPopup");
+        }
+    });
 }
 
 async function signIn(method) {
@@ -63,6 +79,7 @@ async function getTokenPopup(request) {
     return await myMSALObj.acquireTokenSilent(request).catch(async (error) => {
         console.log("silent token acquisition fails.");
         if (error instanceof msal.InteractionRequiredAuthError) {
+            // fallback to interaction when silent call fails
             console.log("acquiring token using popup");
             return myMSALObj.acquireTokenPopup(request).catch(error => {
                 console.error(error);
