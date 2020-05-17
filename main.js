@@ -74,7 +74,7 @@ function renderElhubResponse(response){
 window.addEventListener('load',async()=>{
 
     console.log('Stored Token');
-    console.log(localStorage.getItem('clientT'));
+    console.log(localStorage.getItem('clientB'));
     document.getElementById('testElhub').addEventListener('click',submitData)
 })
 
