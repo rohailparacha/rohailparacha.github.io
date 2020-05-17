@@ -73,6 +73,10 @@ function renderElhubResponse(response){
 
 window.addEventListener('load',async()=>{
 
+    console.log('All Keys');
+    const items = { ...localStorage };
+    console.log(items)
+    
     console.log('Stored Token');
     console.log(localStorage.getItem('clientB'));
     document.getElementById('testElhub').addEventListener('click',submitData)
