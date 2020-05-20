@@ -53,6 +53,40 @@
         <div class="list-group" id="list-tab" role="tablist">
         </div>
       </div>
+
+      <div id="apDiv" style="display: none;">
+        <div class="container">
+
+          <div id="sideBarDiv" class="sidenav">
+          
+          <div class="row">
+          <div class="col-md-9" style="margin-left:50px"> 
+          
+            <input class="form-control" type="text" id="meterNumberTbx" placeholder="Enter Metering Point e.g. 707057500088531602" />
+          </div>
+          
+          <div> 
+            <a href="javascript:void(0)" class="closebtn" >×</a>
+          </div>
+          
+          </div><br>
+          
+          <div class="row">
+          <div class="col-md-9" style="margin-left:170px">
+            <input  id="testElhub" class="btn btn-primary" type="button" value="Test Elhub" />
+          </div>
+          </div><br>
+          
+          <div class="row" style="margin-left:50px"><div id="requestMsgDiv"></div> </div>
+          
+          
+          
+          <div id="resultContent"></div>
+          
+          <div class="row" style="margin-left:50px"><span id="extElhubMsg"></span> </div>
+          
+          </div></div>
+      </div>
       <div class="col-md-5">
         <div class="tab-content" id="nav-tabContent">
         </div>
@@ -76,5 +110,6 @@
     <script type="text/javascript" src="./ui.js"></script>  
     <script type="text/javascript" src="./auth.js"></script>
     <script type="text/javascript" src="./graph.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
