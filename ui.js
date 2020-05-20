@@ -34,6 +34,7 @@ function updateUI(data, endpoint) {
         profileDiv.appendChild(email);
         profileDiv.appendChild(phone);
         profileDiv.appendChild(address);
+        document.getElementById('apDiv').style.display="block";
     } else if (endpoint === graphConfig.graphMailEndpoint) {
         if (data.value.length < 1) {
             alert("Your mailbox is empty!")
