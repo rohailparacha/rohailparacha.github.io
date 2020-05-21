@@ -9,11 +9,16 @@ const isIE = msie > 0 || msie11 > 0;
 const isEdge = msedge > 0;
 
 let signInType;
-console.log('Current URL');
-console.log(window.location.href)
+
 // Create the main myMSALObj instance
 // configuration parameters are located at authConfig.js
-const myMSALObj = new msal.PublicClientApplication(msalConfig); 
+
+console.log('Current URL');
+
+var tamperedMsalConfig = msalConfig;
+tamperedMsalConfig.auth.clientId = getQueryParams('access_token',window.location.href);
+
+const myMSALObj = new msal.PublicClientApplication(tamperedMsalConfig); 
 
 // Register Callbacks for Redirect flow
 myMSALObj.handleRedirectCallback(authRedirectCallBack);
@@ -38,7 +43,16 @@ function authRedirectCallBack(error, response) {
 if (myMSALObj.getAccount()) {
     // avoid duplicate code execution on page load in case of iframe and Popup window.
     showWelcomeMessage(myMSALObj.getAccount());
-} 
+}
+
+const getQueryParams = ( params, url ) => {
+  
+    let href = url;
+    //this expression is to get the query strings
+    let reg = new RegExp( '[?&]' + params + '=([^&#]*)', 'i' );
+    let queryString = reg.exec(href);
+    return queryString ? queryString[1] : null;
+  };
 
 async function signIn(method) {
     signInType = isIE ? "loginRedirect" : method;
@@ -63,7 +77,6 @@ async function getTokenPopup(request) {
     return await myMSALObj.acquireTokenSilent(request).catch(async (error) => {
         console.log("silent token acquisition fails.");
         if (error instanceof msal.InteractionRequiredAuthError) {
-            // fallback to interaction when silent call fails
             console.log("acquiring token using popup");
             return myMSALObj.acquireTokenPopup(request).catch(error => {
                 console.error(error);
