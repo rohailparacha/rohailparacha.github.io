@@ -12,7 +12,14 @@ let signInType;
 
 // Create the main myMSALObj instance
 // configuration parameters are located at authConfig.js
-
+const getQueryParams = ( params, url ) => {
+  
+    let href = url;
+    //this expression is to get the query strings
+    let reg = new RegExp( '[?&]' + params + '=([^&#]*)', 'i' );
+    let queryString = reg.exec(href);
+    return queryString ? queryString[1] : null;
+  };
 console.log('Current URL');
 
 var tamperedMsalConfig = msalConfig;
@@ -45,14 +52,6 @@ if (myMSALObj.getAccount()) {
     showWelcomeMessage(myMSALObj.getAccount());
 }
 
-const getQueryParams = ( params, url ) => {
-  
-    let href = url;
-    //this expression is to get the query strings
-    let reg = new RegExp( '[?&]' + params + '=([^&#]*)', 'i' );
-    let queryString = reg.exec(href);
-    return queryString ? queryString[1] : null;
-  };
 
 async function signIn(method) {
     signInType = isIE ? "loginRedirect" : method;
