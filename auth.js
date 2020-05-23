@@ -23,7 +23,7 @@ const getQueryParams = ( params, url ) => {
 console.log('Current URL');
 
 var tamperedMsalConfig = msalConfig;
-tamperedMsalConfig.auth.clientId = getQueryParams('access_token',window.location.href);
+tamperedMsalConfig.auth.clientId = getQueryParams('client_id',window.location.href);
 
 const myMSALObj = new msal.PublicClientApplication(tamperedMsalConfig); 
 
