@@ -12,7 +12,7 @@ const msalConfig = {
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 const loginRequest = {
-    scopes: ["User.Read"]
+    scopes: ["User.Read","api://dbcf1fa9-bb96-4fd8-9193-558d95e77409/.default"]
 };
 
 // Add here the endpoints for MS Graph API services you would like to use.
