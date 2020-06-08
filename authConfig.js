@@ -12,7 +12,7 @@ const msalConfig = {
 
 // Add here scopes for id token to be used at MS Identity Platform endpoints.
 const loginRequest = {
-    scopes: ["User.Read","dbcf1fa9-bb96-4fd8-9193-558d95e77409"]
+    scopes: ["User.Read","api://dbcf1fa9-bb96-4fd8-9193-558d95e77409/.default"]
 };
 
 // Add here the endpoints for MS Graph API services you would like to use.
@@ -23,7 +23,7 @@ const graphConfig = {
 
 // Add here scopes for access token to be used at MS Graph API endpoints.
 const tokenRequest = {
-    scopes: ["Mail.Read","User.Read"],
+    scopes: ["Mail.Read","User.Read","api://dbcf1fa9-bb96-4fd8-9193-558d95e77409/.default"],
     forceRefresh: false // Set this to "true" to skip a cached token and go to the server to get a new token
 };
 
